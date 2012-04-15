@@ -34,6 +34,10 @@ ghUpload {
 Then you can run `gradle ghUpload` to upload your project and its pom to GitHub. 
 This will also be done automatically as a part of `gradle uploadArchives`.
 
+Unlike `uploadArchives`, attempting to upload a file with the same name will end up 
+giving an error. We have code to work around this, but there's an odd bug with 
+GitHub giving a 404 on `DELETE` calls. See the source code for more details.
+
 Note that there is currently not support for '-SNAPSHOT' versioning, so `ghUpload`
 will simply skip handling with a warning if it is asked to run with that as a version
 string. This is to be construed as a feature, although I am open to a pull request
