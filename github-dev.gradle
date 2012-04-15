@@ -57,9 +57,9 @@ task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
 		def fileBase = "$repo-$project.version"
 
 		def downloads = gitHub().listDownloads()
-		downloads.findAll { it.name.startsWith(fileBase) }*.id.each {
-			logger.warn("Deleting download $id because its name starts with $fileBase")
-			gitHub().deleteDownload(it)
+		downloads.findAll { it.name.startsWith(fileBase) }.each {
+			logger.warn("Deleting download $it.id because its name starts with $fileBase: $it")
+			gitHub().deleteDownload(it.id)
 		}
 
 		def time = new Long(System.currentTimeMillis()).toString(16)
