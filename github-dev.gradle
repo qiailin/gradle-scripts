@@ -64,9 +64,9 @@ task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
 
 		def time = new Long(System.currentTimeMillis()).toString(16)
 		logger.info("Uploading $tasks.jar.archivePath")
-		gitHub().createDownload(tasks.jar.archivePath, "$project.name jar ($project.version.0x${time})")
+		gitHub().createDownload(tasks.jar.archivePath, "$project.name jar (${project.version}.0x${time})")
 		logger.info("Uploading $tasks.ghWritePom.pomFile")
-		gitHub().createDownload(tasks.ghWritePom.pomFile, "$project.name pom ($project.version.0x${time})")
+		gitHub().createDownload(tasks.ghWritePom.pomFile, "$project.name pom (${project.version}.0x${time})")
 	}
 }
 
