@@ -18,17 +18,17 @@ buildscript {
 }
 
 task ghWritePom {
-	pom = uploadArchives.repositories.mavenDeployer.pom
-	pomFile = File.createTempFile("pom", "xml", buildDir)
+	ext.pom = uploadArchives.repositories.mavenDeployer.pom
+	ext.pomFile = File.createTempFile("pom", "xml", buildDir)
 	doLast {
 		pom.writeTo(pomFile)
 	}
 }
 
 task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
-	username = System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: group ?: System.getProperty('user.name')
-	password = System.getProperty("github.password", System.getenv("GITHUB_PASS"))
-	repo = project.group
+	ext.username = System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: group ?: System.getProperty('user.name')
+	ext.password = System.getProperty("github.password", System.getenv("GITHUB_PASS"))
+	ext.repo = project.group
 
 	onlyIf { 
 		if(version.endsWith("-SNAPSHOT")) {
