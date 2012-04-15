@@ -19,8 +19,7 @@ buildscript {
 
 task ghWritePom {
 	ext.pom = uploadArchives.repositories.mavenDeployer.pom
-	buildDir.mkdirs() // Ensure it exists!
-	ext.pomFile = File.createTempFile("pom", "xml", buildDir)
+	ext.pomFile = File.createTempFile("pom", "xml")
 	doLast {
 		pom.writeTo(pomFile)
 	}
