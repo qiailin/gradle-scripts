@@ -1,0 +1,73 @@
+import com.smokejumperit.api.GitHubApi3
+
+apply from:'http://smokejumperit.com/github-libs.gradle'
+
+apply plugin:'maven'
+apply plugin:'osgi'
+
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()	
+		mavenRepo url:'http://repo.smokejumperit.com'
+		mavenRepo url:'http://repository.codehaus.org'
+	}
+	dependencies {
+		classpath 'RobertFischer:github-api-3:0.0.1-SNAPSHOT'
+	}
+}
+
+task ghWritePom {
+	pom = uploadArchives.repositories.mavenDeployer.pom
+	pomFile = File.createTempFile("pom", "xml", buildDir)
+	doLast {
+		pom.writeTo(pomFile)
+	}
+}
+
+task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
+	username = System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: group ?: System.getProperty('user.name')
+	password = System.getProperty("github.password", System.getenv("GITHUB_PASS"))
+	repo = project.group
+
+	onlyIf { 
+		if(version.endsWith("-SNAPSHOT")) {
+			logger.warn("Not uploading to GitHub because we're releasing a snapshot version")
+			return false
+		} else {
+			return true
+		}
+	}
+
+	onlyIf {
+		if(!password) {
+			logger.error(
+				"Need password to upload to GitHub: set ghUpload task property 'password', Java property 'github.password', or system property 'GITHUB_PASS'"
+			)
+			return false
+		} else {
+			return true
+		}
+	}
+
+	doLast {
+		logger.info("Releasing to GitHub repository $username/$repo")
+		def gitHub = { -> new GitHubApi(username, password, repo) }
+
+		def fileBase = "$repo-$project.version"
+
+		def downloads = gitHub().listDownloads()
+		downloads.findAll { it.name.startsWith(fileBase) }*.id.each {
+			logger.warn("Deleting download $id because its name starts with $fileBase")
+			gitHub().deleteDownload(it)
+		}
+
+		def time = new Long(System.currentTimeMillis()).toString(16)
+		logger.info("Uploading $tasks.jar.archivePath")
+		gitHub().createDownload(tasks.jar.archivePath, "$project.name jar ($project.version.0x${time})")
+		logger.info("Uploading $tasks.ghWritePom.pomFile")
+		gitHub().createDownload(tasks.ghWritePom.pomFile, "$project.name pom ($project.version.0x${time})")
+	}
+}
+
+tasks.uploadArchives.dependsOn tasks.ghUpload
