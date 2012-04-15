@@ -56,15 +56,11 @@ task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
 
 		def fileBase = "$repo-$project.version"
 
-/*
-		// @TODO For some reason, deleting downloads isn't working, even though the URL is fine.
-		// >> DELETE /repos/RobertFischer/github-api-3/downloads/220575 HTTP/1.1 -- Gives 404!
 		def downloads = gitHub.listDownloads()
 		downloads.findAll { it.name.startsWith(fileBase) }.each {
 			logger.warn("Deleting download $it.id because its name starts with $fileBase: $it.name")
 			gitHub.deleteDownload(it.id)
 		}
-*/
 
 		def time = System.currentTimeMillis()
 		logger.info("Uploading $tasks.jar.archivePath")
