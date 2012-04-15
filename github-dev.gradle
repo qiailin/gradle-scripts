@@ -26,9 +26,9 @@ task ghWritePom {
 }
 
 task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
-	ext.username = System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: group ?: System.getProperty('user.name')
+	ext.username = System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: project.group ?: System.getProperty('user.name')
 	ext.password = System.getProperty("github.password", System.getenv("GITHUB_PASS"))
-	ext.repo = project.group
+	ext.repo = project.name
 
 	onlyIf { 
 		if(version.endsWith("-SNAPSHOT")) {
