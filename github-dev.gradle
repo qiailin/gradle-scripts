@@ -52,7 +52,7 @@ task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
 
 	doLast {
 		logger.info("Releasing to GitHub repository $username/$repo")
-		def gitHub = { -> new GitHubApi(username, password, repo) }
+		def gitHub = { -> new GitHubApi3(username, password, repo) }
 
 		def fileBase = "$repo-$project.version"
 
