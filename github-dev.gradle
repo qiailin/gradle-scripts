@@ -59,7 +59,7 @@ task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
 		def downloads = gitHub.listDownloads()
 		downloads.findAll { it.name.startsWith(fileBase) }.each {
 			logger.warn("Deleting download $it.id because its name starts with $fileBase: $it.name")
-			gitHub.deleteDownload(it.id)
+			it.delete()
 		}
 
 		def time = System.currentTimeMillis()
