@@ -18,6 +18,7 @@ apply from:'http://smokejumperit.com/github-libs.gradle'
 ```
 
 Now, for you as the developer. First, in your build script, include this:
+
 ```groovy
 group = 'MyGitHubUserName' // Replace with your GitHub username
 version = '0.0.1' // Or whatever your version is
@@ -43,4 +44,8 @@ will simply skip handling with a warning if it is asked to run with that as a ve
 string. This is to be construed as a feature, although I am open to a pull request
 to modify this behavior.
 
+TODO
+----
 
+* It'd be nice to actually plug into the `uploadArchives` and the standard deployment
+mechanisms.
