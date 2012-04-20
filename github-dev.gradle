@@ -2,6 +2,7 @@ import com.smokejumperit.api.GitHubApi3
 
 apply from:'http://smokejumperit.com/github-libs.gradle'
 
+apply plugin:'java'
 apply plugin:'maven'
 apply plugin:'osgi'
 
