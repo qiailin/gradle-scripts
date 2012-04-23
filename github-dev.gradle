@@ -31,17 +31,6 @@ task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]
 	ext.password = System.getProperty("github.password", System.getenv("GITHUB_PASS"))
 	ext.repo = project.name
 
-/*
-	onlyIf { 
-		if(version.endsWith("-SNAPSHOT")) {
-			logger.warn("Not uploading to GitHub because we're releasing a snapshot version")
-			return false
-		} else {
-			return true
-		}
-	}
-*/
-
 	onlyIf {
 		if(!password) {
 			logger.error(
