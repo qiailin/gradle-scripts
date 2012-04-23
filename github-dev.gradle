@@ -26,11 +26,12 @@ task ghWritePom {
 	}
 }
 
-task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
+task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]) {
 	ext.username = System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: project.group ?: System.getProperty('user.name')
 	ext.password = System.getProperty("github.password", System.getenv("GITHUB_PASS"))
 	ext.repo = project.name
 
+/*
 	onlyIf { 
 		if(version.endsWith("-SNAPSHOT")) {
 			logger.warn("Not uploading to GitHub because we're releasing a snapshot version")
@@ -39,6 +40,7 @@ task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
 			return true
 		}
 	}
+*/
 
 	onlyIf {
 		if(!password) {
@@ -64,10 +66,14 @@ task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
 		}
 
 		def time = System.currentTimeMillis()
-		logger.info("Uploading $tasks.jar.archivePath")
-		gitHub.createDownload(tasks.jar.archivePath, "$project.name jar (${project.version}.${time})")
-		logger.info("Uploading $tasks.ghWritePom.pomFile")
-		gitHub.createDownload(tasks.ghWritePom.pomFile, "$project.name pom (${project.version}.${time})")
+		def description = "$project.name $project.version $time (${new Date(time)})"
+		configurations.archives.allArtifacts.files.each { File file ->
+			logger.info("Uploading $file - $description")
+			gitHub.createDownload(file, description)
+		}
+
+		logger.info("Uploading pom")
+		gitHub.createDownload(tasks.ghWritePom.pomFile, "${project.name}-${project.version}.pom", "$project.name $project.version pom file ($time)")
 	}
 }
 
