@@ -72,7 +72,7 @@ task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]
 			gitHub.createDownload(file, description)
 		}
 
-		logger.info("Uploading pom")
+		logger.info("Uploading pom: ${project.name}-${project.version}.pom")
 		gitHub.createDownload(tasks.ghWritePom.pomFile, "${project.name}-${project.version}.pom", "$project.name $project.version pom file ($time)")
 	}
 }
