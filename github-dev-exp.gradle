@@ -26,7 +26,7 @@ task ghWritePom {
 	}
 }
 
-task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
+task ghUpload(dependsOn:[configurations.archives, tasks.ghWritePom]) {
 	ext.username = System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: project.group ?: System.getProperty('user.name')
 	ext.password = System.getProperty("github.password", System.getenv("GITHUB_PASS"))
 	ext.repo = project.name
@@ -64,10 +64,11 @@ task ghUpload(dependsOn:[tasks.ghWritePom, tasks.jar]) {
 		}
 
 		def time = System.currentTimeMillis()
-		logger.info("Uploading $tasks.jar.archivePath")
-		gitHub.createDownload(tasks.jar.archivePath, "$project.name jar (${project.version}.${time})")
-		logger.info("Uploading $tasks.ghWritePom.pomFile")
-		gitHub.createDownload(tasks.ghWritePom.pomFile, "$project.name pom (${project.version}.${time})")
+		def description = "$project.name $project.version $time (${new Date(time)})"
+		configurations.archives.allArtifacts.files.each { File file ->
+			logger.info("Uploading $file - $description")
+			gitHub.createDownload(file, description)
+		}
 	}
 }
 
