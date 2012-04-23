@@ -35,13 +35,8 @@ ghUpload {
 Then you can run `gradle ghUpload` to upload your project and its pom to GitHub. 
 This will also be done automatically as a part of `gradle uploadArchives`.
 
-Note that there is currently not support for '-SNAPSHOT' versioning, so `ghUpload`
-will simply skip handling with a warning if it is asked to run with that as a version
-string. This is to be construed as a feature, although I am open to a pull request
-to modify this behavior.
-
 TODO
 ----
 
 * It'd be nice to actually plug into the `uploadArchives` and the standard deployment
-mechanisms.
+mechanisms. 
