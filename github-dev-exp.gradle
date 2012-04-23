@@ -14,7 +14,7 @@ buildscript {
 		mavenRepo url:'http://repository.codehaus.org'
 	}
 	dependencies {
-		classpath 'RobertFischer:github-api-3:0.0.1'
+		classpath 'RobertFischer:github-api-3:0.0.2'
 	}
 }
 
@@ -73,7 +73,7 @@ task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]
 		}
 
 		logger.info("Uploading pom")
-		gitHub.createDownload(tasks.ghWritePom.pomFile, "$project.name $project.version pom file ($time)")
+		gitHub.createDownload(tasks.ghWritePom.pomFile, "${project.name}-${project.version}.pom", "$project.name $project.version pom file ($time)")
 	}
 }
 
