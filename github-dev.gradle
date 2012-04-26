@@ -19,10 +19,14 @@ buildscript {
 }
 
 task ghWritePom {
-	ext.pom = uploadArchives.repositories.mavenDeployer.pom
-	ext.pomFile = File.createTempFile("pom", "xml")
+	ext.pom = null
+
+	def tmpPom = File.createTempFile("pom", "xml")
+	tmpPom.deleteOnExit()
+	ext.pomFile = tmpPom
 	doLast {
-		pom.writeTo(pomFile)
+		logger.info("Writing GitHub pomfile to ${tmpPom.canonicalPath}")
+		(pom ?: uploadArchives.repositories.mavenDeployer.pom).writeTo(pomFile)
 	}
 }
 
