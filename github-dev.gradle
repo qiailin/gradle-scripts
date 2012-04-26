@@ -83,7 +83,7 @@ task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]
 		def fileBase = "$repo-$project.version"
 
 		def downloads = gitHub.listDownloads()
-		downloads.findAll { it.name.startsWith(fileBase) }.each {
+		downloads.findAll { it.name.toLowerCase().startsWith(fileBase.toLowerCase()) }.each {
 			logger.warn("Deleting download $it.id because its name starts with $fileBase: $it.name")
 			it.delete()
 		}
@@ -95,8 +95,8 @@ task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]
 			gitHub.createDownload(file, description)
 		}
 
-		logger.info("Uploading pom: ${project.name}-${project.version}.pom")
-		gitHub.createDownload(tasks.ghWritePom.pomFile, "${project.name}-${project.version}.pom", "$project.name $project.version pom file ($time)")
+		logger.info("Uploading pom: ${fileBase}.pom")
+		gitHub.createDownload(tasks.ghWritePom.pomFile, "${fileBase}.pom", "$project.name $project.version pom file ($time)")
 	}
 }
 
