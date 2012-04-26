@@ -1,18 +1,24 @@
 buildscript {
   repositories {
+		mavenLocal()
+		mavenCentral()
     add(new org.apache.ivy.plugins.resolver.URLResolver()) {
       name = 'GitHub'
       addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
       addIvyPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].pom'
     }
+		mavenRepo url:'http://repo.smokejumperit.com'
 	}
 }
 
 repositories {
+	mavenLocal()
+	mavenCentral()
 	add(new org.apache.ivy.plugins.resolver.URLResolver()) {
 		name = 'GitHub'
 		addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
 		addIvyPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].pom'
 	}
+	mavenRepo url:'http://repo.smokejumperit.com'
 }
 
