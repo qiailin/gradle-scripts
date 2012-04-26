@@ -4,7 +4,6 @@ apply from:'http://smokejumperit.com/github-libs.gradle'
 
 apply plugin:'java'
 apply plugin:'maven'
-apply plugin:'osgi'
 
 buildscript {
 	repositories {
@@ -18,15 +17,22 @@ buildscript {
 	}
 }
 
-task ghWritePom {
-	ext.pom = null
+task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
+	ext.pom = uploadArchives.repositories.mavenDeployer.pom
 
 	def tmpPom = File.createTempFile("pom", "xml")
 	tmpPom.deleteOnExit()
 	ext.pomFile = tmpPom
+
 	doLast {
-		logger.info("Writing GitHub pomfile to ${tmpPom.canonicalPath}")
-		(pom ?: uploadArchives.repositories.mavenDeployer.pom).writeTo(pomFile)
+		// For some reason, this stuff wasn't being set appropriately
+		pom.version = pom.version ?: project.version
+		pom.artifactId = pom.artifactId ?: project.name
+		pom.groupId = pom.groupId ?: project.group
+
+		logger.info("Writing GitHub pomfile to ${pomFile.canonicalPath}")
+		pom.writeTo(pomFile)
+		logger.debug("pom file:\n${pomFile.text}")
 	}
 }
 
@@ -54,7 +60,7 @@ task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]
 
 		def downloads = gitHub.listDownloads()
 		downloads.findAll { it.name.startsWith(fileBase) }.each {
-			logger.info("Deleting download $it.id because its name starts with $fileBase: $it.name")
+			logger.warn("Deleting download $it.id because its name starts with $fileBase: $it.name")
 			it.delete()
 		}
 
