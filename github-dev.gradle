@@ -26,9 +26,10 @@ task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
 
 	doLast {
 		// For some reason, this stuff wasn't being set appropriately
-		pom.version = pom.version ?: project.version
-		pom.artifactId = pom.artifactId ?: project.name
-		pom.groupId = pom.groupId ?: project.group
+		def pomProj = pom.project
+		pomProj.version = pomProj.version ?: project.version
+		pomProj.artifactId = pomProj.artifactId ?: project.name
+		pomProj.groupId = pomProj.groupId ?: project.group
 
 		logger.info("Writing GitHub pomfile to ${pomFile.canonicalPath}")
 		pom.writeTo(pomFile)
