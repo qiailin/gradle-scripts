@@ -1,7 +1,5 @@
 buildscript {
   repositories {
-		mavenLocal()
-		mavenCentral()
     add(new org.apache.ivy.plugins.resolver.URLResolver()) {
       name = 'GitHub'
       addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
@@ -11,8 +9,6 @@ buildscript {
 }
 
 repositories {
-	mavenLocal()
-	mavenCentral()
 	add(new org.apache.ivy.plugins.resolver.URLResolver()) {
 		name = 'GitHub'
 		addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'

@@ -8,7 +8,6 @@ apply plugin:'osgi'
 
 buildscript {
 	repositories {
-		mavenLocal()
 		mavenCentral()	
 		mavenRepo url:'http://repo.smokejumperit.com'
 		mavenRepo url:'http://repository.codehaus.org'
