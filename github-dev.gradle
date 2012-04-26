@@ -1,10 +1,29 @@
 import com.smokejumperit.api.GitHubApi3
 
-apply from:'http://smokejumperit.com/github-libs.gradle'
-
 apply plugin:'java'
 apply plugin:'maven'
-apply plugin:'osgi'
+
+// Inline the github-libs import
+
+buildscript {
+  repositories {
+    add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+      name = 'GitHub'
+      addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
+      addIvyPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].pom'
+    }
+  }
+}
+
+repositories {
+  add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+    name = 'GitHub'
+    addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
+    addIvyPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].pom'
+  }
+}
+
+// Now begin new code
 
 buildscript {
 	repositories {
