@@ -32,6 +32,9 @@ task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
 		pomProj.groupId = pomProj.groupId ?: project.group
 
 		logger.info("Writing GitHub pomfile to ${pomFile.canonicalPath}")
+		logger.debug("POM Version: ${pom.project.version ?: 'EMPTY'}")
+		logger.debug("POM ArtifactId: ${pom.project.artifactId ?: 'EMPTY'}")
+		logger.debug("POM GroupId: ${pom.project.groupId ?: 'EMPTY'}")
 		pom.writeTo(pomFile)
 		logger.debug("pom file:\n${pomFile.text}")
 	}
