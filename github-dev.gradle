@@ -19,6 +19,8 @@ buildscript {
 }
 
 task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
+	def proj = this.project
+
 	ext.pom = uploadArchives.repositories.mavenDeployer.pom
 
 	def tmpPom = File.createTempFile("pom", "xml")
@@ -27,9 +29,9 @@ task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
 
 	doLast {
 		// For some reason, this stuff wasn't being set appropriately
-		pom.version = pom.version ?: project.version
-		pom.artifactId = pom.artifactId ?: project.name
-		pom.groupId = pom.groupId ?: project.group
+		pom.version = (pom.version && pom.version != "0") ? pom.version : proj.version
+		pom.artifactId = (pom.artifactId && pom.artifactId != "empty-project") ? pom.artifactId : proj.name
+		pom.groupId = (pom.groupId && pom.groupId != "unknown") ? pom.groupId : proj.group
 
 		logger.info("Writing GitHub pomfile to ${pomFile.canonicalPath}")
 		logger.debug("POM Version: ${pom.version ?: 'EMPTY'}")
