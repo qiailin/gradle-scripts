@@ -4,6 +4,7 @@ apply from:'http://smokejumperit.com/github-libs.gradle'
 
 apply plugin:'java'
 apply plugin:'maven'
+apply plugin:'osgi'
 
 buildscript {
 	repositories {
@@ -26,15 +27,14 @@ task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
 
 	doLast {
 		// For some reason, this stuff wasn't being set appropriately
-		def pomProj = pom.project
-		pomProj.version = pomProj.version ?: project.version
-		pomProj.artifactId = pomProj.artifactId ?: project.name
-		pomProj.groupId = pomProj.groupId ?: project.group
+		pom.version = pom.version ?: project.version
+		pom.artifactId = pom.artifactId ?: project.name
+		pom.groupId = pom.groupId ?: project.group
 
 		logger.info("Writing GitHub pomfile to ${pomFile.canonicalPath}")
-		logger.debug("POM Version: ${pom.project.version ?: 'EMPTY'}")
-		logger.debug("POM ArtifactId: ${pom.project.artifactId ?: 'EMPTY'}")
-		logger.debug("POM GroupId: ${pom.project.groupId ?: 'EMPTY'}")
+		logger.debug("POM Version: ${pom.version ?: 'EMPTY'}")
+		logger.debug("POM ArtifactId: ${pom.artifactId ?: 'EMPTY'}")
+		logger.debug("POM GroupId: ${pom.groupId ?: 'EMPTY'}")
 		pom.writeTo(pomFile)
 		logger.debug("pom file:\n${pomFile.text}")
 	}
