@@ -46,6 +46,7 @@ task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
 	def proj = this.project
 	doLast {
 		// For some reason, this stuff wasn't being set appropriately
+		pom.model.name = pom.model.name ?: proj.name
 		pom.version = (pom.version && pom.version != "0") ? pom.version : proj.version
 		pom.artifactId = (pom.artifactId && pom.artifactId != "empty-project") ? pom.artifactId : proj.name
 		pom.groupId = (pom.groupId && pom.groupId != "unknown") ? pom.groupId : proj.group
