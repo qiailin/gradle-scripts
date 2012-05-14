@@ -39,11 +39,12 @@ buildscript {
 task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
 	def proj = this.project
 
+	def me = this
 	this.metaClass.getPom = {->
 		uploadArchives.repositories.mavenDeployer.pom
 	}
 	this.metaClass.setPom = { pom ->
-		this.metaClass.getPom = {-> pom }
+		me.metaClass.getPom = {-> pom }
 	}
 
 	def tmpPom = File.createTempFile("pom", "xml")
