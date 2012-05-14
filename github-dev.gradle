@@ -37,17 +37,14 @@ buildscript {
 }
 
 task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
-	def proj = this.project
-
-	ext.pom = null
+	ext.pom = pom({})
 
 	def tmpPom = File.createTempFile("pom", "xml")
 	tmpPom.deleteOnExit()
 	ext.pomFile = tmpPom
 
+	def proj = this.project
 	doLast {
-		pom = pom ?: proj.tasks.uploadArchives.repositories.mavenDeployer.pom
-
 		// For some reason, this stuff wasn't being set appropriately
 		pom.version = (pom.version && pom.version != "0") ? pom.version : proj.version
 		pom.artifactId = (pom.artifactId && pom.artifactId != "empty-project") ? pom.artifactId : proj.name
