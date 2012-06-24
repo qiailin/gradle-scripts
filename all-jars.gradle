@@ -1,0 +1,44 @@
+import org.gradle.api.tasks.scala.ScalaDoc
+import org.gradle.api.tasks.javadoc.Groovydoc
+import org.gradle.api.tasks.javadoc.Javadoc
+
+allprojects {
+
+	// custom task for creating source jar 
+	task sourcesJar(type: Jar, dependsOn:classes) {     
+		classifier = 'sources'     
+		from sourceSets*.allSource 
+	}
+
+	// custom task for creating doc jar   
+	task docJar(type: Jar) { 
+		classifier = 'doc'
+	}
+	project.tasks.withType(ScalaDoc).all { task ->
+		docJar.dependsOn task
+		docJar.from task
+	}
+	project.tasks.withType(Groovydoc).all { task ->
+		docJar.dependsOn task
+		docJar.from task
+	}
+	project.tasks.withType(Javadoc).all { task ->
+		docJar.dependsOn task
+		docJar.from task
+	}
+
+	// custom task for creating test jar
+	task testJar(type: Jar) {
+		classifier = 'tests'
+		from sourceSets.test.allSource
+		from sourceSets.test.classes
+	}
+
+	// add the jars as artifacts
+	artifacts {      
+		archives sourcesJar      
+		archives docJar
+		archives testJar
+	}
+
+}
