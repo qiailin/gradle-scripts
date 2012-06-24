@@ -1,7 +1,21 @@
-Gradle GitHub Development
-===========================
+Useful Gradle Scripts
+=====================
 
-This plugin enables support for development built on the GitHub infrastructure.
+Various useful snippets of Gradle code that can be applied using:
+
+```groovy
+apply from:'http://smokejumperit.com/script-name.gradle'
+```
+
+Add JavaDoc, Sources, and Test Jars to the Release
+---------------------------------------------------
+
+This uploads the JavaDoc, Sources, and Test jars as well as the straight source jar.
+
+```groovy
+apply from:'http://smokejumperit.com/all-jars.gradle'
+```
+
 
 Using GitHub as a Maven Repository
 -----------------------------------
