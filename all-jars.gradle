@@ -4,6 +4,8 @@ import org.gradle.api.tasks.javadoc.Javadoc
 
 allprojects {
 
+	apply plugin:'java'
+
 	// custom task for creating source jar 
 	task sourcesJar(type: Jar, dependsOn:classes) {     
 		classifier = 'sources'     
