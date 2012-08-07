@@ -5,41 +5,41 @@ import org.gradle.api.tasks.javadoc.Javadoc
 
 apply plugin:'java'
 
-// custom task for creating source jar 
-task sourcesJar(type: Jar, dependsOn:classes) {     
-	classifier = 'sources'     
-	from new ArrayList(sourceSets).find({ it.name != "test" })*.allSource 
+// custom task for creating source jar
+task sourcesJar(type: Jar, dependsOn:classes) {
+  classifier = 'sources'
+  from new ArrayList(sourceSets).find({ it.name != "test" })*.allSource
 }
 
-// custom task for creating doc jar   
-task docJar(type: Jar) { 
-	classifier = 'doc'
+// custom task for creating doc jar
+task docJar(type: Jar) {
+  classifier = 'doc'
 }
 project.tasks.withType(ScalaDoc).all { task ->
-	docJar.dependsOn task
-	docJar.from task
+  docJar.dependsOn task
+  docJar.from task
 }
 project.tasks.withType(Groovydoc).all { task ->
-	docJar.dependsOn task
-	docJar.from task
+  docJar.dependsOn task
+  docJar.from task
 }
 project.tasks.withType(Javadoc).all { task ->
-	docJar.dependsOn task
-	docJar.from task
+  docJar.dependsOn task
+  docJar.from task
 }
 
 // custom task for creating test jar
 task testJar(type: Jar) {
-	classifier = 'tests'
-	from sourceSets.test.allSource
-	from sourceSets.test.output
-	from sourceSets.test.resources
+  classifier = 'tests'
+  from sourceSets.test.allSource
+  from sourceSets.test.output
+  from sourceSets.test.resources
 }
 
 // add the jars as artifacts
-artifacts {      
-	archives sourcesJar      
-	archives docJar
-	archives testJar
+artifacts {
+  archives sourcesJar
+  archives docJar
+  archives testJar
 }
 

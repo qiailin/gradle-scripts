@@ -7,7 +7,7 @@ buildscript {
       addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
       addIvyPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].pom'
     }
-		mavenRepo url:'http://repo.smokejumperit.com'
+		mavenRepo urls:'http://repo.smokejumperit.com'
 	}
 }
 
@@ -19,6 +19,6 @@ repositories {
 		addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
 		addIvyPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].pom'
 	}
-	mavenRepo url:'http://repo.smokejumperit.com'
+	mavenRepo urls:'http://repo.smokejumperit.com'
 }
 

@@ -26,26 +26,26 @@ repositories {
 // Now begin new code
 
 buildscript {
-	repositories {
-		mavenCentral()	
-		mavenRepo url:'http://repo.smokejumperit.com'
-		mavenRepo url:'http://repository.codehaus.org'
-	}
-	dependencies {
-		classpath 'RobertFischer:github-api-3:0.0.2'
-	}
+  repositories {
+    mavenCentral()
+    mavenRepo url:'http://repo.smokejumperit.com'
+    mavenRepo url:'http://repository.codehaus.org'
+  }
+  dependencies {
+    classpath 'RobertFischer:github-api-3:0.0.2'
+  }
 }
 
 task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
-	ext.pom = pom({})
+  ext.pom = pom({})
 
-	def tmpPom = File.createTempFile("pom", "xml")
-	tmpPom.deleteOnExit()
-	ext.pomFile = tmpPom
+  def tmpPom = File.createTempFile("pom", "xml")
+  tmpPom.deleteOnExit()
+  ext.pomFile = tmpPom
 
-	def proj = this.project
-	doLast {
-		// For some reason, this stuff wasn't being set appropriately
+  def proj = this.project
+  doLast {
+    // For some reason, this stuff wasn't being set appropriately
 		pom.model.name = pom.model.name ?: proj.name
 		pom.version = (pom.version && pom.version != "0") ? pom.version : proj.version
 		pom.artifactId = (pom.artifactId && pom.artifactId != "empty-project") ? pom.artifactId : proj.name
@@ -78,7 +78,7 @@ task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]
 
 	doLast {
 		logger.info("Releasing to GitHub repository $username/$repo")
-		def gitHub = new GitHubApi3(username, password, repo) 
+		def gitHub = new GitHubApi3(username, password, repo)
 
 		def fileBase = "$repo-$project.version"
 
