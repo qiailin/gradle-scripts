@@ -1,0 +1,48 @@
+apply plugin:'java'
+apply plugin:'maven'
+apply plugin:'osgi'
+
+configurations {
+	deployerJars
+}
+
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		mavenRepo urls:'http://repo.smokejumperit.com'
+	}
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  mavenRepo urls:'http://repo.smokejumperit.com'
+}
+dependencies {
+  //deployerJars "org.apache.maven.wagon:wagon-ssh:1.0-beta-6" 
+  deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
+}
+
+jar {
+	manifest {
+		def osgiVersion = project.version - "-SNAPSHOT"
+		logger.info("Using OSGi version of $osgiVersion")
+		instruction 'ImportPackage', '*;resolution=optional'
+		instruction 'ExportPackage', "*;version=$osgiVersion"
+	}
+}
+
+uploadArchives { 
+  repositories.mavenDeployer {
+    def repoUser = System.properties['sjit.repo.user']
+    configuration = configurations.deployerJars
+    repository(url: "scp://ssh.repo.smokejumperit.com/home/$repoUser/repo.smokejumperit.com/") {
+      authentication(
+        userName: repoUser,
+        privateKey: System.properties['sjit.repo.keyFile'],
+        passphrase: System.properties['sjit.repo.passphrase']
+      )
+    }
+  } 
+} 
