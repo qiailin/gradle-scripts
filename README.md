@@ -4,7 +4,7 @@ Useful Gradle Scripts
 Various useful snippets of Gradle code that can be applied using:
 
 ```groovy
-apply from:'http://smokejumperit.com/script-name.gradle'
+apply from:'http://gradle.smokejumperit.com/script-name.gradle'
 ```
 
 Add JavaDoc, Sources, and Test Jars to the Release
@@ -13,7 +13,7 @@ Add JavaDoc, Sources, and Test Jars to the Release
 This uploads the JavaDoc, Sources, and Test jars as well as the straight source jar.
 
 ```groovy
-apply from:'http://smokejumperit.com/all-jars.gradle'
+apply from:'http://gradle.smokejumperit.com/all-jars.gradle'
 ```
 
 
@@ -28,7 +28,7 @@ plugin solves that problem.
 First, for your clients. You can simply tell them to include this:
 
 ```groovy
-apply from:'http://smokejumperit.com/github-libs.gradle'
+apply from:'http://gradle.smokejumperit.com/github-libs.gradle'
 ```
 
 Now, for you as the developer. First, in your build script, include this:
