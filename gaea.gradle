@@ -1,0 +1,44 @@
+def gaeVersion = "1.7.0"  // Also set "gaeApiVersion" in 'buildscript'
+
+buildscript {
+	def gaeApiVersion = "1.7.0" 
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+    add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+      name = 'GitHub'
+      addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
+      addIvyPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].pom'
+    }
+		mavenRepo url:'http://repo.smokejumperit.com'
+	}
+
+	dependencies {
+		classpath 'bmuschko:gradle-gaelyk-plugin:0.4'
+		classpath 'bmuschko:gradle-gae-plugin:0.7.6'
+		classpath 'RobertFischer:gradle-gaea-plugin:0.0.3'
+		classpath 'eu.appsatori:gradle-fatjar-plugin:0.1.2'
+		classpath "com.google.appengine:appengine-api-labs:$gaeApiVersion"
+		classpath "com.google.appengine:appengine-api-1.0-sdk:$gaeApiVersion"
+		classpath 'org.gradle.api.plugins:gradle-gae-geb-plugin:0.3'
+	}
+}
+
+// Need to do a funny classloader stunt because Gradle has a problem with buildscript closures
+// in applied files.
+({->
+	def pluginName = "gaea"
+	def files = buildscript.configurations['classpath'].resolve().collect { new URL("file://${it.absolutePath}") } as URL[]
+	def cl = new URLClassLoader(files, buildscript.classLoader)
+	def stream = cl.getResourceAsStream("META-INF/gradle-plugins/${pluginName}.properties")
+	if(!stream) throw new RuntimeException("Cannot find ${pluginName}.properties in ${files} (or buildscript classloader)")
+	def props = new Properties()
+	props.load(stream)
+	stream = null
+	def pluginClass = props['implementation-class'] ?: (props.entrySet() as List)[0].value
+	if(!pluginClass) throw new RuntimeException("Could not find the implementation class for $pluginName")
+	pluginClass = cl.loadClass(pluginClass)
+	pluginClass.GAE_VERSION = gaeVersion
+	apply plugin:pluginClass
+})()
