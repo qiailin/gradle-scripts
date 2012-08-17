@@ -10,14 +10,14 @@ buildscript {
 	repositories {
 		mavenLocal()
 		mavenCentral()
-		mavenRepo urls:'http://repo.smokejumperit.com'
+		mavenRepo url:'http://repo.smokejumperit.com'
 	}
 }
 
 repositories {
   mavenLocal()
   mavenCentral()
-  mavenRepo urls:'http://repo.smokejumperit.com'
+  mavenRepo url:'http://repo.smokejumperit.com'
 }
 dependencies {
   //deployerJars "org.apache.maven.wagon:wagon-ssh:1.0-beta-6"
