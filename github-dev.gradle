@@ -61,8 +61,8 @@ task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
 }
 
 task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]) {
-	ext.username = System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: project.group ?: System.getProperty('user.name')
-	ext.password = System.getProperty("github.password", System.getenv("GITHUB_PASS"))
+	ext.username = project['github.username'] ?: System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: project.group ?: System.getProperty('user.name')
+	ext.password = project['github.password'] ?: System.getProperty("github.password", System.getenv("GITHUB_PASS"))
 	ext.repo = project.name
 
 	onlyIf {
