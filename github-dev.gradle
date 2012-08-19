@@ -33,7 +33,7 @@ buildscript {
     mavenRepo url:'http://repository.codehaus.org'
   }
   dependencies {
-    classpath 'RobertFischer:github-api-3:0.0.2'
+    classpath 'RobertFischer:github-api-3:0.0.3.1'
   }
 }
 
