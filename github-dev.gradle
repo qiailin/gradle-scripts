@@ -27,6 +27,7 @@ repositories {
 
 buildscript {
   repositories {
+		mavenLocal()
     mavenCentral()
     mavenRepo url:'http://repo.smokejumperit.com'
     mavenRepo url:'http://repository.codehaus.org'
@@ -60,10 +61,16 @@ task ghWritePom(dependsOn:[configurations.archives.allArtifacts]) {
 	}
 }
 
+def projProp = { String key ->
+	if(project.hasProperty(key)) return project[key]
+	return null
+}
+
 task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]) {
-	ext.username = project['github.username'] ?: System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: project.group ?: System.getProperty('user.name')
-	ext.password = project['github.password'] ?: System.getProperty("github.password", System.getenv("GITHUB_PASS"))
-	ext.repo = project.name
+	ext.username = projProp('github.username') ?: System.getProperty("github.username", System.getenv("GITHUB_USER")) ?: project.group ?: System.getProperty('user.name')
+	ext.password = projProp('github.password') ?: System.getProperty("github.password", System.getenv("GITHUB_PASS"))
+	ext.repoGroup = null
+	ext.repo = projProp('github.reponame') ?: System.getProperty("github.reponame", System.getenv("GITHUB_REPO")) ?: project.name
 
 	onlyIf {
 		if(!password) {
@@ -77,8 +84,9 @@ task ghUpload(dependsOn:[configurations.archives.allArtifacts, tasks.ghWritePom]
 	}
 
 	doLast {
-		logger.info("Releasing to GitHub repository $username/$repo")
-		def gitHub = new GitHubApi3(username, password, repo)
+		repoGroup = repoGroup ?: username
+		logger.info("Releasing to GitHub repository $repoGroup/$repo")
+		def gitHub = new GitHubApi3(username, password, repoGroup, repo)
 
 		def fileBase = "$repo-$project.version"
 
