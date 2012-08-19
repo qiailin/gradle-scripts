@@ -37,7 +37,7 @@ uploadArchives {
   repositories.mavenDeployer {
     def repoUser = project['sjit.repo.user']
     configuration = configurations.deployerJars
-    repository(url: "scp://repo.smokejumperit.com/home/$repoUser/repo.smokejumperit.com/") {
+    repository(url: "scp://ssh.repo.smokejumperit.com/home/$repoUser/repo.smokejumperit.com/") {
       authentication(
         userName: repoUser,
         privateKey: project['sjit.repo.keyFile'],
