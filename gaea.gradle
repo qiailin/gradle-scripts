@@ -21,13 +21,14 @@ buildscript {
 		classpath "com.google.appengine:appengine-api-labs:$gaeApiVersion"
 		classpath "com.google.appengine:appengine-api-1.0-sdk:$gaeApiVersion"
 		classpath 'org.gradle.api.plugins:gradle-gae-geb-plugin:0.3'
+		classpath 'eu.appsatori:gradle-fatjar-plugin:0.1.2'
 	}
 }
 
 // Need to do a funny classloader stunt because Gradle has a problem with buildscript closures
 // in applied files.
 ({->
-	def pluginName = "gaea"
+	def pluginName = ["fatjar", "gae", "gaelyk", "gaea"]
 	def files = buildscript.configurations['classpath'].resolve().collect { new URL("file://${it.absolutePath}") } as URL[]
 	def cl = new URLClassLoader(files, buildscript.classLoader)
 	def stream = cl.getResourceAsStream("META-INF/gradle-plugins/${pluginName}.properties")
@@ -38,6 +39,6 @@ buildscript {
 	def pluginClass = props['implementation-class'] ?: (props.entrySet() as List)[0].value
 	if(!pluginClass) throw new RuntimeException("Could not find the implementation class for $pluginName")
 	pluginClass = cl.loadClass(pluginClass)
-	pluginClass.GAE_VERSION = gaeVersion
+	if(pluginName == "gaea") pluginClass.GAE_VERSION = gaeVersion
 	apply plugin:pluginClass
 })()
