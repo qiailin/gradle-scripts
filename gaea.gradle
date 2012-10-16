@@ -1,7 +1,7 @@
-def gaeVersion = "1.7.0"  // Also set "gaeApiVersion" in 'buildscript'
+def gaeVersion = "1.7.2.1"  // Also set "gaeApiVersion" in 'buildscript'
 
 buildscript {
-	def gaeApiVersion = "1.7.0" 
+	def gaeApiVersion = "1.7.2.1"
 
 	repositories {
 		mavenLocal()
