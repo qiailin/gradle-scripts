@@ -27,8 +27,7 @@ buildscript {
 
 // Need to do a funny classloader stunt because Gradle has a problem with buildscript closures
 // in applied files.
-({->
-	def pluginName = ["fatjar", "gae", "gaelyk", "gaea"]
+(["fatjar", "gae", "gaelyk", "gaea"].each{ String pluginName ->
 	def files = buildscript.configurations['classpath'].resolve().collect { new URL("file://${it.absolutePath}") } as URL[]
 	def cl = new URLClassLoader(files, buildscript.classLoader)
 	def stream = cl.getResourceAsStream("META-INF/gradle-plugins/${pluginName}.properties")
