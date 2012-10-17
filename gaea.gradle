@@ -41,3 +41,4 @@ buildscript {
 	if(pluginName == "gaea") pluginClass.GAE_VERSION = gaeVersion
 	apply plugin:pluginClass
 })()
+
