@@ -1,7 +1,7 @@
-def gaeVersion = "1.7.2.1"  // Also set "gaeApiVersion" in 'buildscript'
+def gaeVersion = "1.7.3"  // Also set "gaeApiVersion" in 'buildscript'
 
 buildscript {
-	def gaeApiVersion = "1.7.2.1"
+	def gaeApiVersion = "1.7.3"
 
 	repositories {
 		mavenLocal()
@@ -27,9 +27,9 @@ buildscript {
 
 //Need to do a funny classloader stunt because Gradle has a problem with buildscript closures
 // in applied files.
-(["java", "groovy", "fatjar", "gae", "gaelyk", "gaea"].each{ String pluginName ->
-	def files = buildscript.configurations['classpath'].resolve().collect { new URL("file://${it.absolutePath}") } as URL[]
-	def cl = new URLClassLoader(files, buildscript.classLoader)
+def files = buildscript.configurations['classpath'].resolve().collect { new URL("file://${it.absolutePath}") } as URL[]
+def cl = new URLClassLoader(files, buildscript.classLoader)
+["java", "groovy", "war", "fatjar", "gae", "gaelyk", "gaea"].each{ String pluginName ->
 	def stream = cl.getResourceAsStream("META-INF/gradle-plugins/${pluginName}.properties")
 	if(!stream) throw new RuntimeException("Cannot find ${pluginName}.properties in ${files} (or buildscript classloader)")
 	def props = new Properties()
@@ -40,7 +40,7 @@ buildscript {
 	pluginClass = cl.loadClass(pluginClass)
 	if(pluginName == "gaea") pluginClass.GAE_VERSION = gaeVersion
 	apply plugin:pluginClass
-})()
+}
 
 repositories {
 	mavenCentral()
@@ -76,12 +76,12 @@ clean {
      delete sourceSets*.output.classesDir
 }
 
-task copyRuntimeLibraries(type: Sync) {
+task copyRuntimeLibrariesToWebAppLib(type: Sync) {
     def webAppLibDirName = 'src/main/webapp/WEB-INF/lib'
     description = "Copies runtime libraries to $webAppLibDirName."
     from configurations.runtime
     into webAppLibDirName
 }
 
-gaeRun.dependsOn copyRuntimeLibraries
+gaeRun.dependsOn copyRuntimeLibrariesToWebAppLib
 
