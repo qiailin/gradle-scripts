@@ -1,7 +1,7 @@
-def gaeVersion = "1.7.3"  // Also set "gaeApiVersion" in 'buildscript'
+def gaeVersion = "1.7.4"  // Also set "gaeApiVersion" in 'buildscript'
 
 buildscript {
-	def gaeApiVersion = "1.7.3"
+	def gaeApiVersion = "1.7.4"
 
 	repositories {
 		mavenLocal()
@@ -15,12 +15,12 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'bmuschko:gradle-gaelyk-plugin:0.4'
-		classpath 'bmuschko:gradle-gae-plugin:0.7.6'
+    classpath 'org.gradle.api.plugins:gradle-gaelyk-plugin:0.4.1'
+    classpath 'org.gradle.api.plugins:gradle-gae-plugin:0.8'
+    classpath 'org.gradle.api.plugins:gradle-gae-geb-plugin:0.3'
 		classpath 'RobertFischer:gradle-gaea-plugin:0.0.3'
 		classpath "com.google.appengine:appengine-api-labs:$gaeApiVersion"
 		classpath "com.google.appengine:appengine-api-1.0-sdk:$gaeApiVersion"
-		classpath 'org.gradle.api.plugins:gradle-gae-geb-plugin:0.3'
 		classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
 	}
 }
