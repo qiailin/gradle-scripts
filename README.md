@@ -13,7 +13,7 @@ You can also apply them directly from GitHub using the Raw view of the file. e.g
 apply from:'https://raw.github.com/RobertFischer/gradle-scripts/master/all-jars.gradle'
 ```
 
-Or check out this directory into onto local box (e.g. `~/.gradle/RobertFischer/gradle-scripts`) 
+Or check out this directory onto your local box (e.g. `~/.gradle/RobertFischer/gradle-scripts`) 
 and apply them that way.
 
 ```groovy
@@ -31,68 +31,25 @@ This uploads the JavaDoc, Sources, and Test jars as well as the straight source 
 apply from:'http://gradle.smokejumperit.com/all-jars.gradle'
 ```
 
+Gaea (Gaelyk/Google App Engine API)
+-------------------------------------
 
-Using GitHub as a Maven Repository
------------------------------------
-
-You can use GitHub's Downloads section as a Gradle repository. This requires people
-using your project to include GitHub in your project, and for you to get your files
-into the upload section of GitHub. These both used to be a bit annoying, but this
-plugin solves that problem.
-
-First, for your clients. You can simply tell them to include this:
+Bundles together all the configuration and tasks necessary to use [Gaelyk](http://gaelyk.appspot.com).
 
 ```groovy
-apply from:'http://gradle.smokejumperit.com/github-libs.gradle'
+apply from:'http://gradle.smokejumperit.com/gaea.gradle'
 ```
 
-Now, for you as the developer. First, in your build script, include this:
+Smokejumper IT's Repository
+------------------------------
 
-
-Add JavaDoc, Sources, and Test Jars to the Release
----------------------------------------------------
-
-This uploads the JavaDoc, Sources, and Test jars as well as the straight source jar.
+Makes the Smokejumper IT repository available to your Gradle project.
 
 ```groovy
-apply from:'http://gradle.smokejumperit.com/all-jars.gradle'
+apply from:'http://gradle.smokejumperit.com/sjit_repo.gradle'
 ```
 
+What Happend to GitHub-Dev and GitHub-Lib?
+---------------------------------------------
 
-Using GitHub as a Maven Repository
------------------------------------
-
-You can use GitHub's Downloads section as a Gradle repository. This requires people
-using your project to include GitHub in your project, and for you to get your files
-into the upload section of GitHub. These both used to be a bit annoying, but this
-plugin solves that problem.
-
-First, for your clients. You can simply tell them to include this:
-
-```groovy
-apply from:'http://gradle.smokejumperit.com/github-libs.gradle'
-```
-
-Now, for you as the developer. First, in your build script, include this:
-
-```groovy
-group = 'MyGitHubUserName' // Replace with your GitHub username
-version = '0.0.1' // Or whatever your version is
-
-// After 'group' is set...
-apply from:'http://smokejumperit.com/github-dev.gradle'
-
-ghUpload {
-	username = ... // If the code guesses the username wrong: see source for defaults
-	password = ... // Or set Java prop 'github.password' or system env 'GITHUB_PASS'
-}
-```
-
-Then you can run `gradle ghUpload` to upload your project and its pom to GitHub. 
-This will also be done automatically as a part of `gradle uploadArchives`.
-
-TODO
-----
-
-* It'd be nice to actually plug into the `uploadArchives` and the standard deployment
-mechanisms. 
+GitHub got rid of downloads, so those scripts don't work anymore.
